@@ -10,7 +10,7 @@ This is a simple Angular 14+ directive wrapping the amazing [Viewer.js](https://
 
 Add both this library and the original Viewer.js library as dependencies to your project:
 
-`yarn add ngx-viewer viewerjs`
+`yarn add @erengee/ngx-viewer viewerjs`
 
 Import the module into your application's `app.module.ts`:
 
@@ -20,7 +20,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 // import ngx-viewer module
-import { NgxViewerModule } from 'ngx-viewer';
+import { NgxViewerModule } from '@erengee/ngx-viewer';
 
 @NgModule({
   declarations: [
