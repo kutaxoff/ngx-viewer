@@ -137,5 +137,7 @@
       }
     }
   },
-  "defaultProject": "ngx-viewer"
+  "cli": {
+    "analytics": false
+  }
 }
