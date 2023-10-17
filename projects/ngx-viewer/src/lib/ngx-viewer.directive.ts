@@ -23,6 +23,7 @@ import {
 })
 export class NgxViewerDirective implements AfterViewInit, OnDestroy {
   @Input() viewerOptions: Viewer.Options = {};
+  @Input() customName?: string | null;
 
   @Output() viewerReady: EventEmitter<ViewerReadyEvent> = new EventEmitter<ViewerReadyEvent>();
   @Output() viewerShow: EventEmitter<ViewerShowEvent> = new EventEmitter<ViewerShowEvent>();
@@ -43,6 +44,8 @@ export class NgxViewerDirective implements AfterViewInit, OnDestroy {
   instance: Viewer;
 
   private nativeElement: HTMLElement;
+
+  private viewAnchorElement?: HTMLAnchorElement;
 
   constructor(private elementRef: ElementRef) {
     this.nativeElement = this.elementRef.nativeElement;
@@ -79,11 +82,33 @@ export class NgxViewerDirective implements AfterViewInit, OnDestroy {
     this.nativeElement.addEventListener('scaled', (event: CustomEvent) => this.viewerViewed.emit(event), false);
     this.nativeElement.addEventListener('zoom', (event: CustomEvent) => this.viewerZoom.emit(event), false);
     this.nativeElement.addEventListener('zoomed', (event: CustomEvent) => this.viewerZoomed.emit(event), false);
+
+    this.nativeElement.addEventListener('view', this.applyCustomImageName.bind(this), false)
   }
 
   public ngOnDestroy(): void {
     if (this.instance) {
       this.instance.destroy();
     }
+  }
+
+  private applyCustomImageName(viewEvent: ViewerViewEvent) {
+    window.requestAnimationFrame(() => {
+      if (!this.customName) {
+        return;
+      }
+      const element = viewEvent.detail.image;
+      if (!this.viewAnchorElement) {
+        this.viewAnchorElement = document.createElement('a');
+      }
+      this.viewAnchorElement.href = element.src;
+      this.viewAnchorElement.download = this.customName;
+      this.viewAnchorElement.style.display = 'contents';
+      this.viewAnchorElement.onclick = (event: MouseEvent) => {
+        event.preventDefault();
+      };
+      element.parentElement?.insertBefore(this.viewAnchorElement, element);
+      this.viewAnchorElement.appendChild(element);
+    })
   }
 }
