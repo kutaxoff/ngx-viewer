@@ -1,5 +1,22 @@
 ﻿import { Directive, ElementRef, NgModule, OnDestroy, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import Viewer from 'viewerjs';
+import {
+  ViewerHiddenEvent,
+  ViewerHideEvent,
+  ViewerMoveEvent,
+  ViewerMovedEvent,
+  ViewerReadyEvent,
+  ViewerRotateEvent,
+  ViewerRotatedEvent,
+  ViewerScaleEvent,
+  ViewerScaledEvent,
+  ViewerShowEvent,
+  ViewerShownEvent,
+  ViewerViewEvent,
+  ViewerViewedEvent,
+  ViewerZoomEvent,
+  ViewerZoomedEvent
+} from './events';
 
 @Directive({
   selector: '[ngxViewer]'
@@ -7,15 +24,21 @@ import Viewer from 'viewerjs';
 export class NgxViewerDirective implements AfterViewInit, OnDestroy {
   @Input() viewerOptions: Viewer.Options = {};
 
-  @Output() viewerReady: EventEmitter<Event> = new EventEmitter<Event>();
-  @Output() viewerShow: EventEmitter<Event> = new EventEmitter<Event>();
-  @Output() viewerShown: EventEmitter<Event> = new EventEmitter<Event>();
-  @Output() viewerHide: EventEmitter<Event> = new EventEmitter<Event>();
-  @Output() viewerHidden: EventEmitter<Event> = new EventEmitter<Event>();
-  @Output() viewerView: EventEmitter<Event> = new EventEmitter<Event>();
-  @Output() viewerViewed: EventEmitter<Event> = new EventEmitter<Event>();
-  @Output() viewerZoom: EventEmitter<Event> = new EventEmitter<Event>();
-  @Output() viewerZoomed: EventEmitter<Event> = new EventEmitter<Event>();
+  @Output() viewerReady: EventEmitter<ViewerReadyEvent> = new EventEmitter<ViewerReadyEvent>();
+  @Output() viewerShow: EventEmitter<ViewerShowEvent> = new EventEmitter<ViewerShowEvent>();
+  @Output() viewerShown: EventEmitter<ViewerShownEvent> = new EventEmitter<ViewerShownEvent>();
+  @Output() viewerHide: EventEmitter<ViewerHideEvent> = new EventEmitter<ViewerHideEvent>();
+  @Output() viewerHidden: EventEmitter<ViewerHiddenEvent> = new EventEmitter<ViewerHiddenEvent>();
+  @Output() viewerView: EventEmitter<ViewerViewEvent> = new EventEmitter<ViewerViewEvent>();
+  @Output() viewerViewed: EventEmitter<ViewerViewedEvent> = new EventEmitter<ViewerViewedEvent>();
+  @Output() viewerMove: EventEmitter<ViewerMoveEvent> = new EventEmitter<ViewerMoveEvent>();
+  @Output() viewerMoved: EventEmitter<ViewerMovedEvent> = new EventEmitter<ViewerMovedEvent>();
+  @Output() viewerRotate: EventEmitter<ViewerRotateEvent> = new EventEmitter<ViewerRotateEvent>();
+  @Output() viewerRotated: EventEmitter<ViewerRotatedEvent> = new EventEmitter<ViewerRotatedEvent>();
+  @Output() viewerScale: EventEmitter<ViewerScaleEvent> = new EventEmitter<ViewerScaleEvent>();
+  @Output() viewerScaled: EventEmitter<ViewerScaledEvent> = new EventEmitter<ViewerScaledEvent>();
+  @Output() viewerZoom: EventEmitter<ViewerZoomEvent> = new EventEmitter<ViewerZoomEvent>();
+  @Output() viewerZoomed: EventEmitter<ViewerZoomedEvent> = new EventEmitter<ViewerZoomedEvent>();
 
   instance: Viewer;
 
@@ -46,10 +69,16 @@ export class NgxViewerDirective implements AfterViewInit, OnDestroy {
     this.nativeElement.addEventListener('shown', event => this.viewerShown.emit(event), false);
     this.nativeElement.addEventListener('hide', event => this.viewerHide.emit(event), false);
     this.nativeElement.addEventListener('hidden', event => this.viewerHidden.emit(event), false);
-    this.nativeElement.addEventListener('view', event => this.viewerView.emit(event), false);
-    this.nativeElement.addEventListener('viewed', event => this.viewerViewed.emit(event), false);
-    this.nativeElement.addEventListener('zoom', event => this.viewerZoom.emit(event), false);
-    this.nativeElement.addEventListener('zoomed', event => this.viewerZoomed.emit(event), false);
+    this.nativeElement.addEventListener('view', (event: CustomEvent) => this.viewerView.emit(event), false);
+    this.nativeElement.addEventListener('viewed', (event: CustomEvent) => this.viewerViewed.emit(event), false);
+    this.nativeElement.addEventListener('move', (event: CustomEvent) => this.viewerZoom.emit(event), false);
+    this.nativeElement.addEventListener('moved', (event: CustomEvent) => this.viewerZoomed.emit(event), false);
+    this.nativeElement.addEventListener('rotate', (event: CustomEvent) => this.viewerView.emit(event), false);
+    this.nativeElement.addEventListener('rotated', (event: CustomEvent) => this.viewerViewed.emit(event), false);
+    this.nativeElement.addEventListener('scale', (event: CustomEvent) => this.viewerView.emit(event), false);
+    this.nativeElement.addEventListener('scaled', (event: CustomEvent) => this.viewerViewed.emit(event), false);
+    this.nativeElement.addEventListener('zoom', (event: CustomEvent) => this.viewerZoom.emit(event), false);
+    this.nativeElement.addEventListener('zoomed', (event: CustomEvent) => this.viewerZoomed.emit(event), false);
   }
 
   public ngOnDestroy(): void {

@@ -4,3 +4,4 @@
 
 export * from './lib/ngx-viewer.directive';
 export * from './lib/ngx-viewer.module';
+export * from './lib/events';
