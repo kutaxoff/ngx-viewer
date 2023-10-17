@@ -47,12 +47,29 @@ export class NgxViewerDirective implements AfterViewInit, OnDestroy {
 
   private viewAnchorElement?: HTMLAnchorElement;
 
+  private srcChangeObserver = new MutationObserver((_, observer) => {
+    if (this.nativeElement['src']) {
+      this.initViewer();
+      observer.disconnect();
+    }
+  })
+
   constructor(private elementRef: ElementRef) {
     this.nativeElement = this.elementRef.nativeElement;
   }
 
   public ngAfterViewInit(): void {
-    this.initViewer();
+    if (this.nativeElement['src']) {
+      this.initViewer();
+    } else {
+      this.waitForSrc();
+    }
+  }
+
+  private waitForSrc() {
+    this.srcChangeObserver.observe(this.nativeElement, {
+      attributeFilter: ['src'],
+    });
   }
 
   private initViewer(): void {
@@ -90,6 +107,7 @@ export class NgxViewerDirective implements AfterViewInit, OnDestroy {
     if (this.instance) {
       this.instance.destroy();
     }
+    this.srcChangeObserver.disconnect();
   }
 
   private applyCustomImageName(viewEvent: ViewerViewEvent) {
