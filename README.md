@@ -2,13 +2,15 @@
 
 [![Latest Stable Version](https://img.shields.io/npm/v/ngx-viewer.svg)](https://www.npmjs.com/package/ngx-viewer) [![Total Downloads](https://img.shields.io/npm/dt/ngx-viewer.svg)](https://npm-stat.com/charts.html?package=ngx-viewer) [![License](https://img.shields.io/github/license/winteragency/ngx-viewer.svg)](https://github.com/winteragency/ngx-viewer) [![Made by WINTER](https://img.shields.io/badge/made%20by-%E2%9D%84%20WINTER-blue.svg)](https://winteragency.se)
 
-This is a simple Angular 8+ directive wrapping the amazing [Viewer.js](https://fengyuanchen.github.io/viewerjs/) library.
+This is a simple Angular 14+ directive wrapping the amazing [Viewer.js](https://fengyuanchen.github.io/viewerjs/) library. 
+
+(fork of Angular 8+ [library](https://github.com/winteragency/ngx-viewer))
 
 ## Installation
 
 Add both this library and the original Viewer.js library as dependencies to your project:
 
-`yarn add ngx-viewer viewerjs`
+`yarn add @erengee/ngx-viewer viewerjs`
 
 Import the module into your application's `app.module.ts`:
 
@@ -18,7 +20,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 // import ngx-viewer module
-import { NgxViewerModule } from 'ngx-viewer';
+import { NgxViewerModule } from '@erengee/ngx-viewer';
 
 @NgModule({
   declarations: [
